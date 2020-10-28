@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import * as actions from '../../store/actions';
 
@@ -27,9 +28,15 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginBottom: theme.spacing(2),
   },
+  circularProgress: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    margin: 'auto',
+  },
 }));
 
-function Auth({ onAuth }) {
+function Auth({ loading, onAuth }) {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,6 +50,7 @@ function Auth({ onAuth }) {
       onChange: (event) => setEmail(event.target.value),
       required: true,
       autoFocus: true,
+      disabled: loading,
     },
     {
       key: 'textfield_password',
@@ -51,6 +59,7 @@ function Auth({ onAuth }) {
       type: 'password',
       onChange: (event) => setPassword(event.target.value),
       required: true,
+      disabled: loading,
     },
   ];
 
@@ -74,18 +83,28 @@ function Auth({ onAuth }) {
           placeholder={element.label || ''}
           onChange={element.onChange}
           InputLabelProps={{ shrink: true }}
+          disabled={element.disabled || false}
         ></TextField>
       ))}
-      <Button
-        className={classes.button}
-        color="primary"
-        variant="contained"
-        onClick={handleSubmit}
-        fullWidth
-        size="large"
-      >
-        Најави се
-      </Button>
+      <div style={{ position: 'relative' }}>
+        <Button
+          className={classes.button}
+          color="primary"
+          variant="contained"
+          onClick={handleSubmit}
+          fullWidth
+          size="large"
+          disabled={loading}
+        >
+          Најави се
+        </Button>
+        {loading && (
+          <CircularProgress
+            className={classes.circularProgress}
+            color="primary"
+          ></CircularProgress>
+        )}
+      </div>
       <hr />
       <div className={classes.divInfo}>
         <Typography variant="subtitle1" gutterBottom>
@@ -99,12 +118,19 @@ function Auth({ onAuth }) {
         onClick={handleSubmit}
         fullWidth
         size="large"
+        disabled={loading}
       >
         Регистрирај се
       </Button>
     </Paper>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -113,4 +139,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
