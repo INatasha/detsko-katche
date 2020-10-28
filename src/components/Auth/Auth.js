@@ -7,8 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from '@material-ui/lab/Alert';
 
 import * as actions from '../../store/actions';
+import * as CONST from '../../constants';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginBottom: theme.spacing(2),
   },
+  alert: {
+    marginBottom: theme.spacing(2),
+  },
   circularProgress: {
     position: 'absolute',
     left: 0,
@@ -36,11 +41,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Auth({ loading, onAuth }) {
+function Auth({ loading, error, onAuth }) {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const isSignup = false;
+  const errorMessage = error ? getErrorMessage(error) : null;
   const inputElements = [
     {
       key: 'email',
@@ -67,8 +73,20 @@ function Auth({ loading, onAuth }) {
     onAuth(email, password, isSignup);
   }
 
+  function getErrorMessage() {
+    const errorCode = error.message;
+    const errorMessage = CONST.ERROR_MESSAGES[errorCode];
+    if (errorMessage) return errorMessage;
+    else return CONST.ERROR_MESSAGES.GENERAL;
+  }
+
   return (
     <Paper className={classes.paper}>
+      {error && (
+        <Alert className={classes.alert} severity="error">
+          {errorMessage}
+        </Alert>
+      )}
       {inputElements.map((element) => (
         <TextField
           key={element.key}
@@ -129,6 +147,7 @@ function Auth({ loading, onAuth }) {
 const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
+    error: state.auth.error,
   };
 };
 
