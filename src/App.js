@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -8,6 +8,7 @@ import Auth from './components/Auth/Auth';
 import Layout from './components/Layout/Layout';
 import Welcome from './components/Welcome';
 import Games from './components/Games';
+import DetskoKatche from './components/DetskoKatche';
 
 import * as actions from './store/actions/index';
 import * as CONST from './constants';
@@ -33,10 +34,11 @@ function App({ onTryAutoSignup, isAuthenticated }) {
   if (isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/games" component={Games} />
+        <Route path="/detsko-katche" component={DetskoKatche}>
+          <Route path="/detsko-katche/games" component={Games} />
+        </Route>
         {/*<Route path="/logout" component={Logout} />*/}
-        <Route path="/" exact component={Welcome} />
-        <Redirect to="/" />
+        <Redirect to="/detsko-katche" />
       </Switch>
     );
   }
