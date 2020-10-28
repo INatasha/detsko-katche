@@ -50,9 +50,10 @@ export const auth = (email, password, isSignup) => {
     };
     let url =
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAZXEVzragGP1cOUGZ1_o77krIByJauQHU';
-    // if (!isSignup) {
-    //   url = '';
-    // }
+    if (!isSignup) {
+      url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAZXEVzragGP1cOUGZ1_o77krIByJauQHU';
+    }
     console.log({ authData, url });
 
     axios

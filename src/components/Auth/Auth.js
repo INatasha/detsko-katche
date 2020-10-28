@@ -33,8 +33,8 @@ function Auth({ onAuth }) {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log({ email, password });
-  const elements = [
+  const isSignup = false;
+  const inputElements = [
     {
       key: 'email',
       label: 'Електронска адреса',
@@ -54,31 +54,28 @@ function Auth({ onAuth }) {
     },
   ];
 
-  const title = 'Регистрација';
-  const content = elements.map((element) => (
-    <TextField
-      key={element.key}
-      autoFocus={element.autoFocus || false}
-      required={element.required || false}
-      autoComplete="off"
-      type={element.type || 'text'}
-      className={classes.textfield}
-      fullWidth
-      variant="outlined"
-      label={element.label || ''}
-      placeholder={element.label || ''}
-      onChange={element.onChange}
-      InputLabelProps={{ shrink: true }}
-    ></TextField>
-  ));
-
   function handleSubmit() {
-    onAuth(email, password);
+    onAuth(email, password, isSignup);
   }
 
   return (
     <Paper className={classes.paper}>
-      {content}
+      {inputElements.map((element) => (
+        <TextField
+          key={element.key}
+          autoFocus={element.autoFocus || false}
+          required={element.required || false}
+          autoComplete="off"
+          type={element.type || 'text'}
+          className={classes.textfield}
+          fullWidth
+          variant="outlined"
+          label={element.label || ''}
+          placeholder={element.label || ''}
+          onChange={element.onChange}
+          InputLabelProps={{ shrink: true }}
+        ></TextField>
+      ))}
       <Button
         className={classes.button}
         color="primary"
@@ -111,7 +108,8 @@ function Auth({ onAuth }) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth(email, password)),
+    onAuth: (email, password, isSignup) =>
+      dispatch(actions.auth(email, password, isSignup)),
   };
 };
 
