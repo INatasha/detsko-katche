@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import deepcopy from 'deepcopy';
 
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 import MemoryCard from './MemoryCard';
 
@@ -31,14 +32,13 @@ function generateCards(count, cardImages) {
   return shuffleArray(cards);
 }
 
-function Memory({ gameTheme = {}, fieldWidth = 2, fieldHeight = 2 }) {
+function Memory({ gameTheme = {}, fieldWidth = 4, fieldHeight = 2 }) {
   const classes = useStyles();
   const totalCards = fieldWidth * fieldHeight;
 
   const [cards, setCards] = useState(
     generateCards(totalCards, gameTheme.CARDS)
   );
-  console.log({ totalCards, cards });
 
   const [canFlip, setCanFlip] = useState(false);
   const [firstCard, setFirstCard] = useState(null);
@@ -62,15 +62,15 @@ function Memory({ gameTheme = {}, fieldWidth = 2, fieldHeight = 2 }) {
   }
 
   // showcase
-  // useEffect(() => {
-  //  setTimeout(() => {
-  //    let index = 0;
-  //    for (const card of cards) {
-  //      setTimeout(() => setCardIsFlipped(card.id, true), index++ * 100);
-  //    }
-  //    setTimeout(() => setCanFlip(true), cards.length * 100);
-  //  }, 3000);
-  //}, []);
+  useEffect(() => {
+    setTimeout(() => {
+      let index = 0;
+      for (const card of cards) {
+        setTimeout(() => setCardIsFlipped(card.id, true), index++ * 100);
+      }
+      setTimeout(() => setCanFlip(true), cards.length * 100);
+    }, 3000);
+  }, []);
 
   function resetFirstAndSecondCards() {
     setFirstCard(null);
@@ -122,14 +122,17 @@ function Memory({ gameTheme = {}, fieldWidth = 2, fieldHeight = 2 }) {
 
   return (
     <div className={classes.wrapperDiv}>
-      {cards.map((card) => (
-        <MemoryCard
-          cardCover={gameTheme.CARD_DESIGN}
-          onClick={() => onCardClick(card)}
-          key={card.id}
-          {...card}
-        />
-      ))}
+      <Grid container alignItems="center" justify="center" spacing={2}>
+        {cards.map((card) => (
+          <MemoryCard
+            xl={12 / fieldWidth}
+            cardCover={gameTheme.CARD_DESIGN}
+            onClick={() => onCardClick(card)}
+            key={card.id}
+            {...card}
+          />
+        ))}
+      </Grid>
     </div>
   );
 }
