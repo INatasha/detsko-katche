@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
 
@@ -96,6 +97,10 @@ const useStyles = makeStyles((theme) => ({
   typography: {
     marginRight: theme.spacing(2),
   },
+  navLink: {
+    textDecoration: 'none',
+    color: 'inherit',
+  },
 }));
 
 function Layout({ children, isAuthenticated, email }) {
@@ -152,7 +157,11 @@ function Layout({ children, isAuthenticated, email }) {
               <Typography variant="h6" noWrap className={classes.typography}>
                 Здраво, {email}
               </Typography>
-              <Button variant="outlined">Одјави се</Button>
+              <Button variant="outlined">
+                <NavLink className={classes.navLink} to="/logout">
+                  Одјави се
+                </NavLink>
+              </Button>
             </Toolbar>
           </AppBar>
           <Drawer
@@ -198,11 +207,11 @@ function Layout({ children, isAuthenticated, email }) {
           </Drawer>
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            hello
+            {children}
           </main>
         </div>
       )}
-      {children}
+      {!isAuthenticated && children}
     </div>
   );
 }

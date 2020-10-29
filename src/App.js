@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import Auth from './components/Auth/Auth';
+import Logout from './components/Auth/Logout';
 import Layout from './components/Layout/Layout';
 import Welcome from './components/Welcome';
 import Games from './components/Games';
@@ -34,10 +35,8 @@ function App({ onTryAutoSignup, isAuthenticated }) {
   if (isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/detsko-katche" component={DetskoKatche}>
-          <Route path="/detsko-katche/games" component={Games} />
-        </Route>
-        {/*<Route path="/logout" component={Logout} />*/}
+        <Route path="/detsko-katche" component={DetskoKatche} />
+        <Route path="/logout" component={Logout} />
         <Redirect to="/detsko-katche" />
       </Switch>
     );
