@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+import Memory from './Memory';
 import * as CONST from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,13 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function MemoryWrapper() {
-  const [gameTheme, setGameTheme] = useState(null);
-  const [currentImg, setCurrentImg] = useState(
-    gameTheme ? gameTheme.CARD_DESIGN : null
-  );
-  const themes = Object.values(CONST.THEMES);
-  const showChooseThemeView = gameTheme ? false : true;
   const classes = useStyles();
+  const [gameTheme, setGameTheme] = useState(null);
+  const themes = Object.values(CONST.THEMES);
+
+  if (gameTheme) return <Memory gameTheme={gameTheme}></Memory>;
 
   return (
     <div className={classes.wrapperDiv}>

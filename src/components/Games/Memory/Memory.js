@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import uuid from 'uuid';
-import cardImages from '../../cards';
-import MemoryCard from './MemoryCard';
+import { v4 as uuidv4 } from 'uuid';
 import deepcopy from 'deepcopy';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+import MemoryCard from './MemoryCard';
+
+const useStyles = makeStyles((theme) => ({
+  wrapperDiv: { marginTop: theme.spacing(8), padding: theme.spacing(6) },
+}));
 
 function shuffleArray(array) {
   return array.sort(() => 0.5 - Math.random());
 }
 
-function generateCards(count) {
+function generateCards(count, cardImages) {
   if (count % 2 !== 0)
     throw 'Count must be even: 2, 4, 6, etc. but it is ' + count;
 
   const cards = shuffleArray(cardImages)
     .slice(0, count / 2)
     .map((imageURL) => ({
-      id: uuid.v4(),
-      imageURL: 'static/images/cards/' + imageURL,
+      id: uuidv4(),
+      imageURL: imageURL,
       isFlipped: false,
       canFlip: true,
     }))
-    .flatMap((e) => [e, { ...deepcopy(e), id: uuid.v4() }]);
+    .flatMap((e) => [e, { ...deepcopy(e), id: uuidv4() }]);
 
   return shuffleArray(cards);
 }
 
-function Memory({ fieldWidth = 6, fieldHeight = 3 }) {
+function Memory({ gameTheme = {}, fieldWidth = 2, fieldHeight = 2 }) {
+  const classes = useStyles();
   const totalCards = fieldWidth * fieldHeight;
 
-  const [cards, setCards] = useState(generateCards(totalCards));
+  const [cards, setCards] = useState(
+    generateCards(totalCards, gameTheme.CARDS)
+  );
+  console.log({ totalCards, cards });
+
   const [canFlip, setCanFlip] = useState(false);
   const [firstCard, setFirstCard] = useState(null);
   const [secondCard, setSecondCard] = useState(null);
@@ -51,15 +62,15 @@ function Memory({ fieldWidth = 6, fieldHeight = 3 }) {
   }
 
   // showcase
-  useEffect(() => {
-    setTimeout(() => {
-      let index = 0;
-      for (const card of cards) {
-        setTimeout(() => setCardIsFlipped(card.id, true), index++ * 100);
-      }
-      setTimeout(() => setCanFlip(true), cards.length * 100);
-    }, 3000);
-  }, []);
+  // useEffect(() => {
+  //  setTimeout(() => {
+  //    let index = 0;
+  //    for (const card of cards) {
+  //      setTimeout(() => setCardIsFlipped(card.id, true), index++ * 100);
+  //    }
+  //    setTimeout(() => setCanFlip(true), cards.length * 100);
+  //  }, 3000);
+  //}, []);
 
   function resetFirstAndSecondCards() {
     setFirstCard(null);
@@ -110,16 +121,15 @@ function Memory({ fieldWidth = 6, fieldHeight = 3 }) {
   }
 
   return (
-    <div className="game container-md">
-      <div className="cards-container">
-        {cards.map((card) => (
-          <MemoryCard
-            onClick={() => onCardClick(card)}
-            key={card.id}
-            {...card}
-          />
-        ))}
-      </div>
+    <div className={classes.wrapperDiv}>
+      {cards.map((card) => (
+        <MemoryCard
+          cardCover={gameTheme.CARD_DESIGN}
+          onClick={() => onCardClick(card)}
+          key={card.id}
+          {...card}
+        />
+      ))}
     </div>
   );
 }

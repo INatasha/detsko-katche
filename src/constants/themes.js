@@ -9,6 +9,12 @@ import TIGER_CARD from '../assets/images/animals/tigar.jpg';
 import ZEBRA_CARD from '../assets/images/animals/zebra.jpg';
 import GIRAFFE_CARD from '../assets/images/animals/zirafa.jpg';
 
+import MOON_CARD from '../assets/images/nature/mesecina.jpg';
+import CLOUD_CARD from '../assets/images/nature/oblak.jpg';
+import SUN_CARD from '../assets/images/nature/sonce.jpg';
+import RAINBOW_CARD from '../assets/images/nature/vinozito.jpg';
+import STAR_CARD from '../assets/images/nature/zvezda.jpg';
+
 export const THEMES = {
   ANIMALS: {
     KEY: 'ANIMALS',
@@ -29,6 +35,7 @@ export const THEMES = {
     CARD_DESIGN: MEMORY_CARD_DESIGN_2,
     COLOR: '#ECDDD6',
     DISPLAY: 'Природа',
+    CARDS: [MOON_CARD, CLOUD_CARD, SUN_CARD, RAINBOW_CARD, STAR_CARD],
   },
   COMING_SOON: {
     KEY: 'COMING_SOON',
