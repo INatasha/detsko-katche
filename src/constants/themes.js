@@ -40,7 +40,7 @@ export const THEMES = {
   COMING_SOON: {
     KEY: 'COMING_SOON',
     CARD_DESIGN: MEMORY_CARD_DESIGN_3,
-    DISPLAY: 'Наскоро нова тема...',
+    DISPLAY: 'Наскоро нова категорија...',
     LOCKED: true,
   },
 };
