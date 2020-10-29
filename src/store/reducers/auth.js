@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import * as CONST from '../../constants';
 import { updateObject } from '../utility';
 
 const initialState = {
@@ -7,6 +8,8 @@ const initialState = {
   error: null,
   loading: false,
   authRedirectPath: '/',
+  userImage: CONST.DEFAULT_USER_AVATAR,
+  userColor: CONST.THEME_COLORS.primary.main,
 };
 
 const authStart = (state, action) => {
@@ -38,6 +41,11 @@ const setAuthRedirectPath = (state, action) => {
   return updateObject(state, { authRedirectPath: action.path });
 };
 
+const updateUserColor = (state, action) => {
+  console.log({ state, action });
+  return updateObject(state, { ...action });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -50,6 +58,8 @@ const reducer = (state = initialState, action) => {
       return authLogout(state, action);
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return setAuthRedirectPath(state, action);
+    case actionTypes.UPDATE_USER_COLOR:
+      return updateUserColor(state, action);
     default:
       return state;
   }

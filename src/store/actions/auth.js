@@ -114,3 +114,10 @@ export const authCheckState = () => {
     }
   };
 };
+
+export const updateUserColor = (userColor) => {
+  return {
+    type: actionTypes.UPDATE_USER_COLOR,
+    userColor,
+  };
+};

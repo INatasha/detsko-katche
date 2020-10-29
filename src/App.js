@@ -8,17 +8,16 @@ import Auth from './components/Auth/Auth';
 import Logout from './components/Auth/Logout';
 import Layout from './components/Layout/Layout';
 import Welcome from './components/Welcome';
-import Games from './components/Games';
 
 import * as actions from './store/actions/index';
 import * as CONST from './constants';
 
-function App({ onTryAutoSignup, isAuthenticated }) {
+function App({ onTryAutoSignup, isAuthenticated, userColor }) {
   useEffect(onTryAutoSignup, []);
 
   const theme = createMuiTheme({
     palette: {
-      primary: CONST.THEME_COLORS.primary,
+      primary: userColor ? { main: userColor } : CONST.THEME_COLORS.primary,
       secondary: CONST.THEME_COLORS.secondary,
     },
   });
@@ -35,7 +34,6 @@ function App({ onTryAutoSignup, isAuthenticated }) {
     routes = (
       <Switch>
         <Route path="/logout" component={Logout} />
-        <Route path="/games/memorija" component={Games} />
         <Route path="/" exact component={Layout} />
         <Redirect to="/" />
       </Switch>
@@ -48,6 +46,7 @@ function App({ onTryAutoSignup, isAuthenticated }) {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
+    userColor: state.auth.userColor,
   };
 };
 

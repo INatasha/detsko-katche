@@ -23,7 +23,10 @@ import Avatar from '@material-ui/core/Avatar';
 import MemoryIcon from '@material-ui/icons/Memory';
 import SettingsIcon from '@material-ui/icons/Settings';
 
+import Memory from '../Games/Memory';
+import Settings from '../Settings';
 import logo from '../../assets/images/logo_transparent.png';
+import * as CONST from '../../constants';
 
 const drawerWidth = 240;
 
@@ -78,16 +81,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
     padding: theme.spacing(3),
+    width: '100%',
   },
   avatar: {
     marginRight: theme.spacing(2),
@@ -103,9 +103,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Layout({ isAuthenticated, email }) {
+function Layout({ isAuthenticated, email, userImage }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  console.log({ selectedIndex });
+  function getContent(index) {
+    if (index === 0) return <Memory></Memory>;
+    if (index === 1) return <Settings></Settings>;
+  }
 
   function handleDrawerOpen() {
     setOpen(true);
@@ -114,6 +121,10 @@ function Layout({ isAuthenticated, email }) {
   function handleDrawerClose() {
     setOpen(false);
   }
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
 
   return (
     <div className={classes.root}>
@@ -147,6 +158,12 @@ function Layout({ isAuthenticated, email }) {
           </Typography>
         </Toolbar>
         <Toolbar>
+          <Avatar
+            variant="circle"
+            alt="user avatar"
+            src={userImage ? userImage : CONST.DEFAULT_USER_AVATAR}
+            style={{ marginRight: '10px' }}
+          ></Avatar>
           <Typography variant="h6" noWrap className={classes.typography}>
             Здраво, {email}
           </Typography>
@@ -178,7 +195,12 @@ function Layout({ isAuthenticated, email }) {
         <Divider />
         <List subheader={<ListSubheader>Игри</ListSubheader>}>
           {['Меморија'].map((text, index) => (
-            <ListItem button key={text}>
+            <ListItem
+              button
+              key={text}
+              selected={selectedIndex === 0}
+              onClick={(event) => handleListItemClick(event, 0)}
+            >
               <ListItemIcon>
                 <MemoryIcon />
               </ListItemIcon>
@@ -189,7 +211,12 @@ function Layout({ isAuthenticated, email }) {
         <Divider />
         <List>
           {['Подесувања'].map((text, index) => (
-            <ListItem button key={text}>
+            <ListItem
+              button
+              key={text}
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+            >
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
@@ -199,7 +226,7 @@ function Layout({ isAuthenticated, email }) {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
+        <div className={classes.toolbar}>{getContent(selectedIndex)}</div>
       </main>
     </div>
   );
@@ -209,6 +236,7 @@ const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
     email: state.auth.email,
+    userImage: state.auth.userImage,
   };
 };
 
