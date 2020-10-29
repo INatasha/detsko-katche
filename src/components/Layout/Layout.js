@@ -107,11 +107,6 @@ function Layout({ children, isAuthenticated, email }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  let toolbar = '';
-  if (isAuthenticated) {
-    toolbar = 'toolbar';
-  }
-
   function handleDrawerOpen() {
     setOpen(true);
   }
