@@ -4,11 +4,14 @@ import deepcopy from 'deepcopy';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import MemoryCard from './MemoryCard';
 
 const useStyles = makeStyles((theme) => ({
   wrapperDiv: { marginTop: theme.spacing(8), padding: theme.spacing(6) },
+  button: { marginRight: theme.spacing(2) },
 }));
 
 function shuffleArray(array) {
@@ -32,7 +35,12 @@ function generateCards(count, cardImages) {
   return shuffleArray(cards);
 }
 
-function Memory({ gameTheme = {}, fieldWidth = 4, fieldHeight = 2 }) {
+function Memory({
+  gameTheme = {},
+  handleBackButtonClick,
+  fieldWidth = 4,
+  fieldHeight = 2,
+}) {
   const classes = useStyles();
   const totalCards = fieldWidth * fieldHeight;
 
@@ -123,6 +131,17 @@ function Memory({ gameTheme = {}, fieldWidth = 4, fieldHeight = 2 }) {
   return (
     <div className={classes.wrapperDiv}>
       <Grid container alignItems="center" justify="center" spacing={2}>
+        <Grid xs={12} style={{ marginBottom: '20px' }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            className={classes.button}
+            startIcon={<ArrowBackIcon></ArrowBackIcon>}
+            onClick={handleBackButtonClick}
+          >
+            Назад кон категории
+          </Button>
+        </Grid>
         {cards.map((card) => (
           <MemoryCard
             xl={12 / fieldWidth}

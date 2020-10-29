@@ -34,8 +34,16 @@ function MemoryWrapper() {
   const classes = useStyles();
   const [gameTheme, setGameTheme] = useState(null);
   const themes = Object.values(CONST.THEMES);
-
-  if (gameTheme) return <Memory gameTheme={gameTheme}></Memory>;
+  function handleBackButtonClick() {
+    setGameTheme(null);
+  }
+  if (gameTheme)
+    return (
+      <Memory
+        gameTheme={gameTheme}
+        handleBackButtonClick={handleBackButtonClick}
+      ></Memory>
+    );
 
   return (
     <div className={classes.wrapperDiv}>
