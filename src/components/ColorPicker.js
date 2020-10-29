@@ -5,22 +5,22 @@ import { TwitterPicker } from 'react-color';
 import * as actions from '../store/actions/index';
 import * as CONST from '../constants';
 
-function ColorPicker({ dispatch }) {
+function ColorPicker({ dispatch, userColor }) {
   const [selectedColor, setSelectedColor] = useState(
-    CONST.THEME_COLORS.primary.main
+    userColor ? userColor : CONST.THEME_COLORS.primary.main
   );
   function handleChange(color) {
     setSelectedColor(color);
     dispatch(actions.updateUserColor(color.hex));
   }
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <div
         className="choosen-color"
         style={{ backgroundColor: selectedColor?.hex ?? selectedColor }}
       ></div>
       <TwitterPicker
-        width="420px"
+        width="inherit"
         color={selectedColor}
         colors={CONST.COLOR_OPTIONS}
         onChange={handleChange}
@@ -29,6 +29,12 @@ function ColorPicker({ dispatch }) {
   );
 }
 
-const mapDispatchToProps = (dispatch) => dispatch;
+const mapDispatchToProps = (dispatch) => ({ dispatch });
 
-export default connect(mapDispatchToProps)(ColorPicker);
+const mapStateToProps = (state) => {
+  return {
+    userColor: state.auth.userColor,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorPicker);

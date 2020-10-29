@@ -42,7 +42,6 @@ const setAuthRedirectPath = (state, action) => {
 };
 
 const updateUserColor = (state, action) => {
-  console.log({ state, action });
   return updateObject(state, { ...action });
 };
 

@@ -23,7 +23,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MemoryIcon from '@material-ui/icons/Memory';
 import SettingsIcon from '@material-ui/icons/Settings';
 
-import Memory from '../Games/Memory';
+import MemoryWrapper from '../Games/Memory/MemoryWrapper';
 import Settings from '../Settings';
 import logo from '../../assets/images/logo_transparent.png';
 import * as CONST from '../../constants';
@@ -108,9 +108,8 @@ function Layout({ isAuthenticated, email, userImage }) {
   const [open, setOpen] = React.useState(true);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  console.log({ selectedIndex });
   function getContent(index) {
-    if (index === 0) return <Memory></Memory>;
+    if (index === 0) return <MemoryWrapper></MemoryWrapper>;
     if (index === 1) return <Settings></Settings>;
   }
 

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(8),
   },
   paper: {
-    padding: theme.spacing(4),
+    padding: theme.spacing(6),
   },
   typography: {
     marginBottom: theme.spacing(4),
@@ -36,11 +36,11 @@ function Settings() {
       <Paper className={classes.paper}>
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant="h5" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               Подесувања
             </Typography>
             <Typography
-              variant="body1"
+              variant="subtitle1"
               gutterBottom
               className={classes.typography}
             >
@@ -48,8 +48,15 @@ function Settings() {
               примарната боја на твојот профил!
             </Typography>
           </Grid>
-          <Grid item xs={12} container spacing={8}>
-            <Grid item xs>
+          <Grid
+            item
+            xs={12}
+            container
+            spacing={6}
+            alignItems="center"
+            justify="space-between"
+          >
+            <Grid item md={6} style={{ width: '100%' }}>
               <DropzoneArea
                 onChange={handleChange}
                 acceptedFiles={['image/*']}
@@ -59,7 +66,7 @@ function Settings() {
                 showAlerts={false}
               />
             </Grid>
-            <Grid item xs>
+            <Grid item md={6}>
               <ColorPicker></ColorPicker>
             </Grid>
           </Grid>
