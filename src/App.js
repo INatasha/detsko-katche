@@ -9,7 +9,6 @@ import Logout from './components/Auth/Logout';
 import Layout from './components/Layout/Layout';
 import Welcome from './components/Welcome';
 import Games from './components/Games';
-import DetskoKatche from './components/DetskoKatche';
 
 import * as actions from './store/actions/index';
 import * as CONST from './constants';
@@ -36,17 +35,14 @@ function App({ onTryAutoSignup, isAuthenticated }) {
     routes = (
       <Switch>
         <Route path="/logout" component={Logout} />
-        <Route path="/" exact component={DetskoKatche} />
+        <Route path="/games/memorija" component={Games} />
+        <Route path="/" exact component={Layout} />
         <Redirect to="/" />
       </Switch>
     );
   }
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Layout>{routes}</Layout>
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={theme}>{routes}</ThemeProvider>;
 }
 
 const mapStateToProps = (state) => {

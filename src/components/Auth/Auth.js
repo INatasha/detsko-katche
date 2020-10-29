@@ -45,7 +45,6 @@ function Auth({ loading, error, onAuth }) {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isSignup = false;
   const errorMessage = error ? getErrorMessage(error) : null;
   const inputElements = [
     {
@@ -69,7 +68,7 @@ function Auth({ loading, error, onAuth }) {
     },
   ];
 
-  function handleSubmit() {
+  function handleSubmit(isSignup) {
     onAuth(email, password, isSignup);
   }
 
@@ -109,7 +108,7 @@ function Auth({ loading, error, onAuth }) {
           className={classes.button}
           color="primary"
           variant="contained"
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(false)}
           fullWidth
           size="large"
           disabled={loading}
@@ -133,7 +132,7 @@ function Auth({ loading, error, onAuth }) {
         className={classes.button}
         color="primary"
         variant="outlined"
-        onClick={handleSubmit}
+        onClick={() => handleSubmit(true)}
         fullWidth
         size="large"
         disabled={loading}

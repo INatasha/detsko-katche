@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Layout({ children, isAuthenticated, email }) {
+function Layout({ isAuthenticated, email }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -116,97 +116,91 @@ function Layout({ children, isAuthenticated, email }) {
   }
 
   return (
-    <div>
-      {isAuthenticated && (
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar
-            position="fixed"
-            className={clsx(classes.appBar, {
-              [classes.appBarShift]: open,
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
             })}
           >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                className={clsx(classes.menuButton, {
-                  [classes.hide]: open,
-                })}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Avatar
-                variant="square"
-                alt="Logo"
-                src={logo}
-                className={classes.avatar}
-              />
-              <Typography variant="h6" noWrap>
-                Детско Катче
-              </Typography>
-            </Toolbar>
-            <Toolbar>
-              <Typography variant="h6" noWrap className={classes.typography}>
-                Здраво, {email}
-              </Typography>
-              <Button variant="outlined">
-                <NavLink className={classes.navLink} to="/logout">
-                  Одјави се
-                </NavLink>
-              </Button>
-            </Toolbar>
-          </AppBar>
-          <Drawer
-            variant="permanent"
-            className={clsx(classes.drawer, {
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            })}
-            classes={{
-              paper: clsx({
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-              }),
-            }}
-          >
-            <div className={classes.toolbar}>
-              <IconButton onClick={handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
-            <Divider />
-            <List subheader={<ListSubheader>Игри</ListSubheader>}>
-              {['Меморија'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>
-                    <MemoryIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {['Подесувања'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {children}
-          </main>
+            <MenuIcon />
+          </IconButton>
+          <Avatar
+            variant="square"
+            alt="Logo"
+            src={logo}
+            className={classes.avatar}
+          />
+          <Typography variant="h6" noWrap>
+            Детско Катче
+          </Typography>
+        </Toolbar>
+        <Toolbar>
+          <Typography variant="h6" noWrap className={classes.typography}>
+            Здраво, {email}
+          </Typography>
+          <Button variant="outlined">
+            <NavLink className={classes.navLink} to="/logout">
+              Одјави се
+            </NavLink>
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
         </div>
-      )}
-      {!isAuthenticated && children}
+        <Divider />
+        <List subheader={<ListSubheader>Игри</ListSubheader>}>
+          {['Меморија'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                <MemoryIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['Подесувања'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                <SettingsIcon />
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+      </main>
     </div>
   );
 }
