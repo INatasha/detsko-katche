@@ -35,9 +35,9 @@ function App({ onTryAutoSignup, isAuthenticated }) {
   if (isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/detsko-katche" component={DetskoKatche} />
         <Route path="/logout" component={Logout} />
-        <Redirect to="/detsko-katche" />
+        <Route path="/" exact component={DetskoKatche} />
+        <Redirect to="/" />
       </Switch>
     );
   }
