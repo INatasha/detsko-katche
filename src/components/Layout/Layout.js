@@ -112,6 +112,7 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
   const [open, setOpen] = React.useState(true);
   const [openParentAuth, setOpenParentAuth] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const isParentMode = mode === CONST.MODES.PARENT;
 
   useEffect(() => {
     if (mode === CONST.MODES.CHILD) setSelectedIndex(0);
@@ -172,14 +173,14 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
             src={userImage ? userImage : CONST.DEFAULT_USER_AVATAR}
             style={{ marginRight: '10px' }}
           ></Avatar>
-          {mode === CONST.MODES.PARENT && (
+          {isParentMode && (
             <Typography variant="h6" noWrap className={classes.typography}>
               Здраво, {email}
             </Typography>
           )}
           <Tooltip
             title={
-              mode === CONST.MODES.PARENT
+              isParentMode
                 ? 'Премини во режим за деца'
                 : 'Премини во режим за родители'
             }
@@ -187,24 +188,21 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
             <IconButton
               className={classes.avatar}
               onClick={() => {
-                console.log(mode === CONST.MODES.PARENT);
-                if (mode === CONST.MODES.PARENT) {
-                  console.log('hello');
+                if (isParentMode) {
                   dispatch(actions.updateMode(CONST.MODES.CHILD));
                 } else {
-                  console.log('child');
                   setOpenParentAuth(true);
                 }
               }}
             >
-              {mode === CONST.MODES.PARENT ? (
+              {isParentMode ? (
                 <ChildCareIcon></ChildCareIcon>
               ) : (
                 <PermIdentityIcon></PermIdentityIcon>
               )}
             </IconButton>
           </Tooltip>
-          {mode === CONST.MODES.PARENT && (
+          {isParentMode && (
             <Button variant="outlined">
               <NavLink className={classes.navLink} to="/logout">
                 Одјави се
@@ -248,7 +246,7 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
           ))}
         </List>
         <Divider />
-        {mode === CONST.MODES.PARENT && (
+        {isParentMode && (
           <List>
             {['Подесувања'].map((text, index) => (
               <ListItem

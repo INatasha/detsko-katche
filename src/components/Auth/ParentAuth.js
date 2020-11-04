@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
 function ParentAuth({ onClose, password, dispatch }) {
   const classes = useStyles();
   const [enteredPassword, setEnteredPassword] = useState('');
-  console.log({ enteredPassword, password });
 
   useEffect(() => {
     if (enteredPassword === password) {
