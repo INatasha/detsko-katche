@@ -58,8 +58,8 @@ function MemoryWrapper() {
               gutterBottom
               className={classes.typography}
             >
-              Со избирање на некоја од категориите долу, играта Меморија ќе биде
-              со картички од соодветната категорија!
+              Со избирање на некоја од понудените категории, играта Меморија
+              може да започне!
             </Typography>
           </Grid>
           <Grid item xs={12} container spacing={4} justify="space-evenly">

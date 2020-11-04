@@ -131,7 +131,7 @@ function Memory({
   return (
     <div className={classes.wrapperDiv}>
       <Grid container alignItems="center" justify="center" spacing={2}>
-        <Grid xs={12} style={{ marginBottom: '20px' }}>
+        <Grid item xs={12} style={{ marginBottom: '20px' }}>
           <Button
             variant="outlined"
             color="primary"

@@ -8,12 +8,13 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userId, email) => {
+export const authSuccess = (token, userId, email, password) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
     userId: userId,
     email: email,
+    password: password,
   };
 };
 
@@ -71,7 +72,8 @@ export const auth = (email, password, isSignup) => {
           authSuccess(
             response.data.idToken,
             response.data.localId,
-            response.data.email
+            response.data.email,
+            password
           )
         );
         dispatch(checkAuthTimeout(response.data.expiresIn));
@@ -116,5 +118,12 @@ export const updateUserColor = (userColor) => {
   return {
     type: actionTypes.UPDATE_USER_COLOR,
     userColor,
+  };
+};
+
+export const updateMode = (mode) => {
+  return {
+    type: actionTypes.UPDATE_MODE,
+    mode,
   };
 };

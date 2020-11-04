@@ -10,6 +10,7 @@ const initialState = {
   authRedirectPath: '/',
   userImage: CONST.DEFAULT_USER_AVATAR,
   userColor: CONST.THEME_COLORS.primary.main,
+  mode: CONST.MODES.PARENT,
 };
 
 const authStart = (state, action) => {
@@ -23,6 +24,7 @@ const authSuccess = (state, action) => {
     email: action.email,
     error: null,
     loading: false,
+    password: action.password,
   });
 };
 
@@ -45,6 +47,10 @@ const updateUserColor = (state, action) => {
   return updateObject(state, { ...action });
 };
 
+const updateMode = (state, action) => {
+  return updateObject(state, { ...action });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:
@@ -59,6 +65,8 @@ const reducer = (state = initialState, action) => {
       return setAuthRedirectPath(state, action);
     case actionTypes.UPDATE_USER_COLOR:
       return updateUserColor(state, action);
+    case actionTypes.UPDATE_MODE:
+      return updateMode(state, action);
     default:
       return state;
   }

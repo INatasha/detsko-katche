@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import clsx from 'clsx';
@@ -13,19 +13,23 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Avatar from '@material-ui/core/Avatar';
 import MemoryIcon from '@material-ui/icons/Memory';
 import SettingsIcon from '@material-ui/icons/Settings';
+import ChildCareIcon from '@material-ui/icons/ChildCare';
+import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 
 import MemoryWrapper from '../Games/Memory/MemoryWrapper';
+import ParentAuth from '../Auth/ParentAuth';
 import Settings from '../Settings';
 import logo from '../../assets/images/logo_transparent.png';
+import * as actions from '../../store/actions/index';
 import * as CONST from '../../constants';
 
 const drawerWidth = 240;
@@ -103,10 +107,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Layout({ isAuthenticated, email, userImage }) {
+function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [openParentAuth, setOpenParentAuth] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  useEffect(() => {
+    if (mode === CONST.MODES.CHILD) setSelectedIndex(0);
+  }, [mode]);
 
   function getContent(index) {
     if (index === 0) return <MemoryWrapper></MemoryWrapper>;
@@ -163,14 +172,45 @@ function Layout({ isAuthenticated, email, userImage }) {
             src={userImage ? userImage : CONST.DEFAULT_USER_AVATAR}
             style={{ marginRight: '10px' }}
           ></Avatar>
-          <Typography variant="h6" noWrap className={classes.typography}>
-            Здраво, {email}
-          </Typography>
-          <Button variant="outlined">
-            <NavLink className={classes.navLink} to="/logout">
-              Одјави се
-            </NavLink>
-          </Button>
+          {mode === CONST.MODES.PARENT && (
+            <Typography variant="h6" noWrap className={classes.typography}>
+              Здраво, {email}
+            </Typography>
+          )}
+          <Tooltip
+            title={
+              mode === CONST.MODES.PARENT
+                ? 'Премини во режим за деца'
+                : 'Премини во режим за родители'
+            }
+          >
+            <IconButton
+              className={classes.avatar}
+              onClick={() => {
+                console.log(mode === CONST.MODES.PARENT);
+                if (mode === CONST.MODES.PARENT) {
+                  console.log('hello');
+                  dispatch(actions.updateMode(CONST.MODES.CHILD));
+                } else {
+                  console.log('child');
+                  setOpenParentAuth(true);
+                }
+              }}
+            >
+              {mode === CONST.MODES.PARENT ? (
+                <ChildCareIcon></ChildCareIcon>
+              ) : (
+                <PermIdentityIcon></PermIdentityIcon>
+              )}
+            </IconButton>
+          </Tooltip>
+          {mode === CONST.MODES.PARENT && (
+            <Button variant="outlined">
+              <NavLink className={classes.navLink} to="/logout">
+                Одјави се
+              </NavLink>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -192,7 +232,7 @@ function Layout({ isAuthenticated, email, userImage }) {
           </IconButton>
         </div>
         <Divider />
-        <List subheader={<ListSubheader>Игри</ListSubheader>}>
+        <List>
           {['Меморија'].map((text, index) => (
             <ListItem
               button
@@ -208,35 +248,47 @@ function Layout({ isAuthenticated, email, userImage }) {
           ))}
         </List>
         <Divider />
-        <List>
-          {['Подесувања'].map((text, index) => (
-            <ListItem
-              button
-              key={text}
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
-            >
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        {mode === CONST.MODES.PARENT && (
+          <List>
+            {['Подесувања'].map((text, index) => (
+              <ListItem
+                button
+                key={text}
+                selected={selectedIndex === 1}
+                onClick={(event) => handleListItemClick(event, 1)}
+              >
+                <ListItemIcon>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        )}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar}>{getContent(selectedIndex)}</div>
       </main>
+      {openParentAuth && (
+        <ParentAuth
+          onClose={() => {
+            setOpenParentAuth(false);
+          }}
+        ></ParentAuth>
+      )}
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => ({ dispatch });
 
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
     email: state.auth.email,
     userImage: state.auth.userImage,
+    mode: state.auth.mode,
   };
 };
 
-export default connect(mapStateToProps)(Layout);
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

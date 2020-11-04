@@ -20,7 +20,7 @@ export const THEMES = {
     KEY: 'ANIMALS',
     CARD_DESIGN: MEMORY_CARD_DESIGN_1,
     COLOR: '#BDCAD3',
-    DISPLAY: 'Животни',
+    DISPLAY: 'Диви животни',
     CARDS: [
       LION_CARD,
       MONKEY_CARD,
