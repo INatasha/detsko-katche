@@ -1,24 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import Auth from './Auth/Auth';
-import welcomeImg from '../assets/images/kid_playing.jpg';
+import welcomeImg from '../assets/images/welcome.jpg';
+import welcomeSound from '../assets/sounds/welcome.wav';
 
 const useStyles = makeStyles((theme) => ({
   wrapperDiv: {
     padding: theme.spacing(8),
     margin: theme.spacing(8),
   },
-  textPrimary: {
-    color: theme.palette.primary.main,
-    fontWeight: 600,
-  },
   image: {
     borderRadius: '10px',
-    maxWidth: '700px',
+    maxWidth: '800px',
   },
   button: {
     margin: theme.spacing(2),
@@ -27,6 +26,12 @@ const useStyles = makeStyles((theme) => ({
 
 function Welcome() {
   const classes = useStyles();
+  const playSound = (audioFile) => {
+    audioFile.play();
+  };
+  useEffect(() => {
+    playSound(new Audio(welcomeSound));
+  }, []);
 
   return (
     <div className={classes.wrapperDiv}>
@@ -34,34 +39,22 @@ function Welcome() {
         container
         justify="center"
         alignItems="center"
-        spacing={8}
+        spacing={6}
         direction="row"
       >
-        <Grid
-          container
-          item
-          md={7}
-          direction="column"
-          spacing={2}
-          alignItems="center"
-        >
-          <Grid item xs>
-            <Typography variant="h3" align="center" gutterBottom>
-              Добредојде во{' '}
-              <span className={classes.textPrimary}>Детско Катче</span>!
-            </Typography>
-          </Grid>
-          <Grid item xs>
-            <img
-              className={classes.image}
-              alt="kid playing"
-              src={welcomeImg}
-              width="100%"
-              height="100%"
-            ></img>
-          </Grid>
+        <Grid item lg={7}>
+          <img
+            className={classes.image}
+            alt="welcome image"
+            src={welcomeImg}
+            width="100%"
+            height="100%"
+          ></img>
+          <IconButton onClick={() => playSound(new Audio(welcomeSound))}>
+            <VolumeUpIcon fontSize="large"></VolumeUpIcon>
+          </IconButton>
         </Grid>
-        <Grid item md={5}>
+        <Grid item lg={5}>
           <Auth></Auth>
         </Grid>
       </Grid>
