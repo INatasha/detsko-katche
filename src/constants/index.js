@@ -5,6 +5,7 @@ export * from './colors.js';
 export * from './errors.js';
 export * from './themes.js';
 export * from './modes.js';
+export * from './seasons.js';
 export * from './sounds.js';
 
 export const DEFAULT_USER_AVATAR = default_user_avatar;

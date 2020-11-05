@@ -21,6 +21,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import MemoryIcon from '@material-ui/icons/Memory';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ChildCareIcon from '@material-ui/icons/ChildCare';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
@@ -28,6 +29,8 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import MemoryWrapper from '../Games/Memory/MemoryWrapper';
 import ParentAuth from '../Auth/ParentAuth';
 import Settings from '../Settings';
+import Seasons from '../LearningMaterials/Seasons';
+
 import logo from '../../assets/images/logo_transparent.png';
 import * as actions from '../../store/actions/index';
 import * as CONST from '../../constants';
@@ -121,6 +124,7 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
   function getContent(index) {
     if (index === 0) return <MemoryWrapper></MemoryWrapper>;
     if (index === 1) return <Settings></Settings>;
+    if (index === 2) return <Seasons></Seasons>;
   }
 
   function handleDrawerOpen() {
@@ -231,23 +235,34 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
         </div>
         <Divider />
         <List>
-          {['Меморија'].map((text, index) => (
-            <ListItem
-              button
-              key={text}
-              selected={selectedIndex === 0}
-              onClick={(event) => {
-                handleListItemClick(event, 0);
-                const memorySound = new Audio(CONST.SOUNDS.MEMORY_SOUND);
-                memorySound.play();
-              }}
-            >
-              <ListItemIcon>
-                <MemoryIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <ListItem
+            button
+            key="Учиме"
+            selected={selectedIndex === 2}
+            onClick={(event) => {
+              handleListItemClick(event, 2);
+            }}
+          >
+            <ListItemIcon>
+              <MenuBookIcon />
+            </ListItemIcon>
+            <ListItemText primary="Учиме" />
+          </ListItem>
+          <ListItem
+            button
+            key="Меморија"
+            selected={selectedIndex === 0}
+            onClick={(event) => {
+              handleListItemClick(event, 0);
+              const memorySound = new Audio(CONST.SOUNDS.MEMORY_SOUND);
+              memorySound.play();
+            }}
+          >
+            <ListItemIcon>
+              <MemoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Меморија" />
+          </ListItem>
         </List>
         <Divider />
         {isParentMode && (

@@ -38,7 +38,6 @@ function RegistrationDialog({ onSubmit, onClose }) {
         InputLabelProps={{ shrink: true }}
       ></TextField>
       <TextField
-        autoFocus
         required
         autoComplete="off"
         type="text"
