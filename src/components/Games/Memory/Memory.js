@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import MemoryCard from './MemoryCard';
+import * as CONST from '../../../constants';
 
 const useStyles = makeStyles((theme) => ({
   wrapperDiv: { marginTop: theme.spacing(8), padding: theme.spacing(6) },
@@ -51,6 +52,7 @@ function Memory({
   const [canFlip, setCanFlip] = useState(false);
   const [firstCard, setFirstCard] = useState(null);
   const [secondCard, setSecondCard] = useState(null);
+  const [gameFinished, setGameFinished] = useState(false);
 
   function setCardIsFlipped(cardID, isFlipped) {
     setCards((prev) =>
@@ -60,6 +62,7 @@ function Memory({
       })
     );
   }
+
   function setCardCanFlip(cardID, canFlip) {
     setCards((prev) =>
       prev.map((c) => {
@@ -80,6 +83,13 @@ function Memory({
     }, 3000);
   }, []);
 
+  useEffect(() => {
+    if (gameFinished) {
+      const yaySound = new Audio(CONST.SOUNDS.YAY_SOUND);
+      yaySound.play();
+    }
+  }, [gameFinished]);
+
   function resetFirstAndSecondCards() {
     setFirstCard(null);
     setSecondCard(null);
@@ -91,7 +101,10 @@ function Memory({
     setCardIsFlipped(firstCard.id, false);
     setCardIsFlipped(secondCard.id, false);
     resetFirstAndSecondCards();
+    if (!cards.map((card) => card.isFlipped).includes(true))
+      setGameFinished(true);
   }
+
   function onFailureGuess() {
     const firstCardID = firstCard.id;
     const secondCardID = secondCard.id;
@@ -142,15 +155,19 @@ function Memory({
             Назад кон категории
           </Button>
         </Grid>
-        {cards.map((card) => (
-          <MemoryCard
-            xl={12 / fieldWidth}
-            cardCover={gameTheme.CARD_DESIGN}
-            onClick={() => onCardClick(card)}
-            key={card.id}
-            {...card}
-          />
-        ))}
+        {gameFinished ? (
+          <img src={CONST.YAY_GIF}></img>
+        ) : (
+          cards.map((card) => (
+            <MemoryCard
+              xl={12 / fieldWidth}
+              cardCover={gameTheme.CARD_DESIGN}
+              onClick={() => onCardClick(card)}
+              key={card.id}
+              {...card}
+            />
+          ))
+        )}
       </Grid>
     </div>
   );
