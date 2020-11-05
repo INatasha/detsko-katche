@@ -8,7 +8,7 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import Auth from './Auth/Auth';
 import welcomeImg from '../assets/images/welcome.jpg';
-import welcomeSound from '../assets/sounds/welcome.wav';
+import { SOUNDS } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   wrapperDiv: {
@@ -30,7 +30,7 @@ function Welcome() {
     audioFile.play();
   };
   useEffect(() => {
-    playSound(new Audio(welcomeSound));
+    playSound(new Audio(SOUNDS.WELCOME_SOUND));
   }, []);
 
   return (
@@ -50,7 +50,9 @@ function Welcome() {
             width="100%"
             height="100%"
           ></img>
-          <IconButton onClick={() => playSound(new Audio(welcomeSound))}>
+          <IconButton
+            onClick={() => playSound(new Audio(SOUNDS.WELCOME_SOUND))}
+          >
             <VolumeUpIcon fontSize="large"></VolumeUpIcon>
           </IconButton>
         </Grid>

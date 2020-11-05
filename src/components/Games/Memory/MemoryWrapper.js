@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 
 import Memory from './Memory';
 import * as CONST from '../../../constants';
@@ -51,8 +52,19 @@ function MemoryWrapper() {
         <Grid container justify="center" alignItems="center">
           <Grid item xs={12}>
             <Typography variant="h4" gutterBottom>
-              Одбери категорија
+              Одбери категорија{' '}
+              <IconButton
+                onClick={() => {
+                  const chooseCategorySound = new Audio(
+                    CONST.SOUNDS.CHOOSE_CATEGORY_SOUND
+                  );
+                  chooseCategorySound.play();
+                }}
+              >
+                <VolumeUpIcon fontSize="large"></VolumeUpIcon>
+              </IconButton>
             </Typography>
+
             <Typography
               variant="subtitle1"
               gutterBottom
@@ -77,6 +89,12 @@ function MemoryWrapper() {
                     disabled={theme.LOCKED}
                     onClick={() => {
                       if (!theme.LOCKED) setGameTheme(theme);
+                    }}
+                    onMouseOver={() => {
+                      if (theme.SOUND) {
+                        const cardAudio = new Audio(theme.SOUND);
+                        cardAudio.play();
+                      }
                     }}
                   >
                     <Typography variant="h4">{theme.DISPLAY}</Typography>

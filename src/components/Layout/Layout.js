@@ -236,7 +236,11 @@ function Layout({ isAuthenticated, email, userImage, mode, dispatch }) {
               button
               key={text}
               selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
+              onClick={(event) => {
+                handleListItemClick(event, 0);
+                const memorySound = new Audio(CONST.SOUNDS.MEMORY_SOUND);
+                memorySound.play();
+              }}
             >
               <ListItemIcon>
                 <MemoryIcon />
