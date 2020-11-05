@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
+  },
+  media: {
+    height: 350,
   },
 }));
 
@@ -77,28 +82,31 @@ function MemoryWrapper() {
           <Grid item xs={12} container spacing={4} justify="space-evenly">
             {themes.map((theme) => (
               <Grid key={theme.KEY} item md sm={12} xs={12}>
-                <Card
-                  style={
-                    theme.LOCKED
-                      ? { opacity: 0.5 }
-                      : { background: theme.COLOR }
-                  }
-                >
+                <Card style={{ background: theme.COLOR }}>
                   <CardActionArea
-                    className={classes.cardContent}
-                    disabled={theme.LOCKED}
                     onClick={() => {
-                      if (!theme.LOCKED) setGameTheme(theme);
-                    }}
-                    onMouseOver={() => {
-                      if (theme.SOUND) {
-                        const cardAudio = new Audio(theme.SOUND);
-                        cardAudio.play();
-                      }
+                      setGameTheme(theme);
                     }}
                   >
-                    <Typography variant="h4">{theme.DISPLAY}</Typography>
+                    <CardMedia
+                      className={classes.media}
+                      image={theme.COVER}
+                      title={theme.DISPLAY}
+                    />
                   </CardActionArea>
+                  <CardActions>
+                    <Typography variant="h5">
+                      {theme.DISPLAY}{' '}
+                      <IconButton
+                        onClick={() => {
+                          const cardAudio = new Audio(theme.SOUND);
+                          cardAudio.play();
+                        }}
+                      >
+                        <VolumeUpIcon fontSize="large"></VolumeUpIcon>
+                      </IconButton>
+                    </Typography>
+                  </CardActions>
                 </Card>
               </Grid>
             ))}
